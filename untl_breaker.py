@@ -45,7 +45,7 @@ class Record:
             for element in elements:
                 if self.options.qualifier:
                     if element.get("qualifier", None) == self.options.qualifier:
-                        print "t"
+                        print("t")
                         try:
                             element_dict = {}
                             element_dict["value"] = element.find(UNTL_NAMESPACE + "name").text.encode("utf-8").strip()
@@ -85,13 +85,13 @@ class Record:
         for i in self.elem[1][0]:
             if i.tag.rsplit("}")[-1] in name_fields:
                 try:
-                    text = i.find(UNTL_NAMESPACE + "name").text.encode("utf-8").strip()
+                    text = i.find(UNTL_NAMESPACE + "name").strip()
                 except:
                     text = "None"
             else:
-                text = i.text.encode("utf-8").strip()
+                text = i.text.strip()
             value = text.replace("\t", " ")
-            value = text.replace("\n", " ")
+            value = value.replace("\n", " ")
             qualifier = i.get("qualifier", None)
             tag = i.tag
             out.append((tag, qualifier, value))
@@ -118,7 +118,7 @@ def main():
     (options, args) = parser.parse_args()
     
     if len(args) == 0:
-        print usage
+        print(usage)
         exit()
     
     for event, elem in ElementTree.iterparse(args[0]):
@@ -130,30 +130,31 @@ def main():
                 if r.get_record_status() != "deleted":
                     record_fields = r.get_all_data()
                     for field_data in record_fields:
-                        print "%s\t%s\t%s\t%s" % (meta_id, field_data[0], field_data[1], field_data[2])
+                        print("{}\t{}\t{}\t{}".format(meta_id, field_data[0], field_data[1], field_data[2]))
                 elem.clear()
                 continue
 
+            # Present Section
             if options.present == True:
                 if r.get_record_status() != "deleted":
                     if r.get_elements() == None:
                         present = False
                     else:
                         present = True
-                    print "%s %s" % (meta_id, present)
+                    print("{}\t{}".format(meta_id, present))
                 elem.clear()
                 continue
                 
             if r.get_elements() != None :
                 for i in r.get_elements():
                         if options.id and options.add_qualifier:
-                            print "%s\t%s\t%s" % (meta_id, i["qualifier"], i["value"])
+                            print("{}\t{}\t{}".format((meta_id, i["qualifier"], i["value"].decode('utf-8'))))
                         elif options.add_qualifier:
-                            print "%s\t%s" % (i["qualifier"], i["value"])
+                            print("{}\t{}".format((i["qualifier"], i["value"].decode('utf-8'))))
                         elif options.id and options.add_qualifier == False:
-                            print "%s\t%s" % (meta_id, i["value"])
+                            print("{}\t{}".format(meta_id, i["value"].decode('utf-8').replace('\n', ' ').replace('\t', ' ')))
                         else:
-                            print i["value"]
+                            print(i["value"].decode('utf-8'))
             elem.clear()
 if __name__ == "__main__":
     main()
