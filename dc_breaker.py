@@ -145,23 +145,23 @@ def pretty_print_stats(stats_averages):
         if element_length < len(element):
             element_length = len(element)
 
-    print "\n\n"
+    print("\n\n")
     for element in sorted(stats_averages["field_info"]):
         percent = (stats_averages["field_info"][element]["field_count"] / float(record_count)) * 100
-        percentPrint = "=" * (int(percent) / 4)
+        percentPrint = "=" * (int(percent) // 4)
         columnOne = " " * (element_length - len(element)) + element
-        print "%s: |%-25s| %6s/%s | %3d%% " % (
+        print("%s: |%-25s| %6s/%s | %3d%% " % (
             columnOne,
             percentPrint,
             stats_averages["field_info"][element]["field_count"],
             record_count,
             percent
-        )
+        ))
 
-    print "\n"
+    print("\n")
     completeness = calc_completeness(stats_averages)
     for i in ["dc_completeness", "collection_completeness", "wwww_completeness", "average_completeness"]:
-        print "%23s %f" % (i, completeness[i])
+        print("%23s %f" % (i, completeness[i]))
 
 
 def main():
@@ -187,7 +187,7 @@ def main():
     (options, args) = parser.parse_args()
 
     if len(args) == 0:
-        print usage
+        print(usage)
         exit()
 
     if options.element is None:
@@ -203,7 +203,7 @@ def main():
                 if r.get_record_status() != "deleted":
                     record_fields = r.get_all_data()
                     for field_data in record_fields:
-                        print "%s\t%s\t%s" % (record_id, field_data[0], field_data[1].replace("\t", " "))
+                        print("%s\t%s\t%s" % (record_id, field_data[0], field_data[1].replace("\t", " ")))
                 elem.clear()
                 continue
 
@@ -212,17 +212,17 @@ def main():
                 if r.get_record_status() != "deleted" and r.get_elements() is not None:
                     for i in r.get_elements():
                         if options.id:
-                            print "\t".join([record_id, i])
+                            print("\t".join([record_id, i]))
                         else:
-                            print i
+                            print(i)
 
             if options.stats is False and options.present is True:
                 if r.get_record_status() != "deleted":
-                    print "%s %s" % (record_id, r.has_element())
+                    print("%s %s" % (record_id, r.has_element()))
 
             if options.stats is True and options.element is None:
                 if (s % 1000) == 0 and s != 0:
-                    print "%d records processed" % s
+                    print("%d records processed" % s)
                 s += 1
                 if r.get_record_status() != "deleted":
                     collect_stats(stats_aggregate, r.get_stats())
