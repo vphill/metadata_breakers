@@ -77,4 +77,4 @@ info:ark/67531/metapth45909	Announcement 1912-1913
 info:ark/67531/metapth45908	Catalog of Abilene Christian College, 1913-1914
 ```
 
-More examples and a full explination of how you might use this tool as part of metadata analysis can be found in the article (Metadata Analysis at the Command-Line)[https://journal.code4lib.org/articles/7818]
+More examples and a full explination of how you might use this tool as part of metadata analysis can be found in the article [Metadata Analysis at the Command-Line](https://journal.code4lib.org/articles/7818)
